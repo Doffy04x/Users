@@ -75,7 +75,7 @@
                         <span class="txt1 p-b-17">
                             Or Login Using
                         </span>
-                        <a href="login.html" class="txt2">
+                        <a href="index.html" class="txt2">
                             Login
                         </a>
                     </div>
@@ -111,7 +111,7 @@
                 firebase.auth().createUserWithEmailAndPassword(email, password)
                     .then(function() {
                         alert('Account created successfully');
-                        window.location.href = 'login.html';
+                        window.location.href = 'index.html';
                     })
                     .catch(function(error) {
                         var errorMessage = error.message;
