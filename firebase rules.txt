@@ -1,0 +1,14 @@
+Firebade real time database rules :
+
+
+
+{
+  "rules": {
+    "users": {
+      "$userId": {
+        ".read": "$userId === auth.uid",
+        ".write": "$userId === auth.uid"
+      }
+    }
+  }
+}
