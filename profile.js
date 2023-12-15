@@ -58,13 +58,13 @@ document.getElementById('profileForm').addEventListener('submit', function(event
         });
     } else {
         alert('No user signed in.');
-        window.location.href = 'login.html';
+        window.location.href = 'index.html';
     }
 });
 
 // Redirect if not logged in
 firebase.auth().onAuthStateChanged((user) => {
     if (!user) {
-        window.location.href = 'login.html';
+        window.location.href = 'index.html';
     }
 });
