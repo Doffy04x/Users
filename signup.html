@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Sign up</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- External Stylesheets -->
+    <link rel="icon" type="image/png" href="images/icons/favicon.ico"/>
+    <link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="fonts/iconic/css/material-design-iconic-font.min.css">
+    <link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
+    <link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
+    <link rel="stylesheet" type="text/css" href="vendor/animsition/css/animsition.min.css">
+    <link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
+    <link rel="stylesheet" type="text/css" href="vendor/daterangepicker/daterangepicker.css">
+    <link rel="stylesheet" type="text/css" href="css/util.css">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
+
+    <!-- Firebase Configuration -->
+    <script>
+        var firebaseConfig = {
+            apiKey: "AIzaSyDs2gZJ6wIRDOqEtzyIT7toug3Xs3-_w1E",
+            authDomain: "user-7c7f8.firebaseapp.com",
+            projectId: "user-7c7f8",
+            storageBucket: "user-7c7f8.appspot.com",
+            messagingSenderId: "55544751979",
+            appId: "1:55544751979:web:40366cb78cb1cf8162ce2e",
+            measurementId: "G-FP9KRJ1GV3"
+        };
+        firebase.initializeApp(firebaseConfig);
+    </script>
+</head>
+<body>
+    <div class="limiter">
+        <div class="container-login100" style="background-image: url('images/bg-01.jpg');">
+            <div class="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-54">
+                <form class="login100-form validate-form" id="signupForm">
+                    <span class="login100-form-title p-b-49">
+                        Signup
+                    </span>
+
+                    <div class="wrap-input100 validate-input m-b-23" data-validate="Email is required">
+                        <span class="label-input100">Email</span>
+                        <input class="input100" type="email" name="email" placeholder="Type your email">
+                        <span class="focus-input100" data-symbol="&#xf206;"></span>
+                    </div>
+
+                    <div class="wrap-input100 validate-input" data-validate="Password is required">
+                        <span class="label-input100">Password</span>
+                        <input class="input100" type="password" name="pass" placeholder="Type your password">
+                        <span class="focus-input100" data-symbol="&#xf190;"></span>
+                    </div>
+
+                    <div class="wrap-input100 validate-input" data-validate="Confirm Password is required">
+                        <span class="label-input100">Confirm Password</span>
+                        <input class="input100" type="password" name="confirm_pass" placeholder="Confirm your password">
+                        <span class="focus-input100" data-symbol="&#xf190;"></span>
+                    </div>
+
+                    <div class="container-login100-form-btn">
+                        <div class="wrap-login100-form-btn">
+                            <div class="login100-form-bgbtn"></div>
+                            <button type="submit" class="login100-form-btn">
+                                Signup
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="flex-col-c p-t-155">
+                        <span class="txt1 p-b-17">
+                            Or Login Using
+                        </span>
+                        <a href="login.html" class="txt2">
+                            Login
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="dropDownSelect1"></div>
+
+    <!-- Firebase Signup Handling Script -->
+    <script>
+        document.getElementById('signupForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            var email = document.querySelector('input[name="email"]').value;
+            var password = document.querySelector('input[name="pass"]').value;
+            var confirmPassword = document.querySelector('input[name="confirm_pass"]').value;
+
+            if (password !== confirmPassword) {
+                alert('Passwords do not match.');
+                return;
+            }
+
+            // Extract the domain from the entered email address
+            var emailDomain = email.split('@')[1];
+
+            // List of trusted email domains
+            var trustedEmailDomains = ['gmail.com', 'yahoo.com', 'outlook.com', 'example.com']; // Add more trusted domains as needed
+
+            // Check if the email domain is in the list of trusted domains
+            if (trustedEmailDomains.includes(emailDomain)) {
+                firebase.auth().createUserWithEmailAndPassword(email, password)
+                    .then(function() {
+                        alert('Account created successfully');
+                        window.location.href = 'login.html';
+                    })
+                    .catch(function(error) {
+                        var errorMessage = error.message;
+                        if (errorMessage.includes('email-already-in-use')) {
+                            alert('Email already used. Try to login or reset password.');
+                        } else {
+                            alert(errorMessage);
+                        }
+                    });
+            } else {
+                alert('Please use a valid email address from a trusted domain.');
+            }
+        });
+    </script>
+
+    <!-- External Scripts -->
+    <script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+    <script src="vendor/animsition/js/animsition.min.js"></script>
+    <script src="vendor/bootstrap/js/popper.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="vendor/select2/select2.min.js"></script>
+    <script src="vendor/daterangepicker/moment.min.js"></script>
+    <script src="vendor/daterangepicker/daterangepicker.js"></script>
+    <script src="vendor/countdowntime/countdowntime.js"></script>
+    <script src="index.js"></script>
+</body>
+</html>

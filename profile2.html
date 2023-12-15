@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>User Profile</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Link to your CSS files -->
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" type="text/css" href="css/util.css">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
+    <!-- Include additional Firebase services as needed -->
+</head>
+<body>
+    <div class="limiter">
+        <div class="container-login100" style="background: linear-gradient(-135deg, #c850c0, #4158d0);">
+            <div class="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-54">
+                <form class="login100-form validate-form" id="profileForm">
+                    <span class="login100-form-title p-b-49">
+                        User Profile
+                    </span>
+                    <div class="wrap-input100 m-b-23">
+                        <input class="input100" type="text" name="firstName" placeholder="Votre nom" required>
+                        <span class="focus-input100"></span>
+                    </div>
+                    <div class="wrap-input100 m-b-23">
+                        <input class="input100" type="text" name="lastName" placeholder="Votre prénom" required>
+                        <span class="focus-input100"></span>
+                    </div>
+                    <div class="wrap-input100 m-b-23">
+                        <input class="input100" type="date" name="dob" placeholder="Votre date de naissance" required>
+                        <span class="focus-input100"></span>
+                    </div>
+                    <div class="wrap-input100 m-b-23">
+                        <input class="input100" type="text" name="placeOfBirth" placeholder="Votre lieu de naissance" required>
+                        <span class="focus-input100"></span>
+                    </div>
+                    <div class="wrap-input100 m-b-23">
+                        <select class="input100" name="gender" required>
+                            <option value="">Votre genre</option>
+                            <option value="male">Homme</option>
+                            <option value="female">Femme</option>
+                        </select>
+                        <span class="focus-input100"></span>
+                    </div>
+                    <div class="container-login100-form-btn">
+                        <div class="wrap-login100-form-btn">
+                            <div class="login100-form-bgbtn"></div>
+                            <button type="submit" class="login100-form-btn">
+                                Submit
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var firebaseConfig = {
+             apiKey: "AIzaSyDs2gZJ6wIRDOqEtzyIT7toug3Xs3-_w1E",
+             authDomain: "user-7c7f8.firebaseapp.com",
+             projectId: "user-7c7f8",
+            storageBucket: "user-7c7f8.appspot.com",
+             messagingSenderId: "55544751979",
+             appId: "1:55544751979:web:40366cb78cb1cf8162ce2e",
+             measurementId: "G-FP9KRJ1GV3"
+        };
+        document.getElementById('profileForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Form validation
+            var allFilled = true;
+            document.querySelectorAll('.input100').forEach(function(input) {
+                if (!input.value) {
+                    allFilled = false;
+                }
+            });
+
+            if (!allFilled) {
+                alert('Please fill all the information.');
+                return;
+            }
+
+            // Save information to Firebase
+            const user = firebase.auth().currentUser;
+            const dbRef = firebase.database().ref('users/' + user.uid);
+
+            // Collect user input
+            const firstName = document.querySelector('input[name="firstName"]').value;
+            const lastName = document.querySelector('input[name="lastName"]').value;
+            const gender = document.querySelector('select[name="gender"]').value;
+            const dob = document.querySelector('input[name="dob"]').value;
+
+            // Create user data object
+            let updates = {
+                firstName: firstName,
+                lastName: lastName,
+                gender: gender,
+                dob: dob
+            };
+
+            // Update the database
+            dbRef.update(updates).then(() => {
+                alert('Profile successfully filled');
+            }).catch((error) => {
+                console.error(error);
+                alert('Failed to save information: ' + error.message);
+            });
+        });
+
+        // Redirect if not logged in
+        firebase.auth().onAuthStateChanged((user) => {
+            if (!user) {
+                window.location.href = 'login.html';
+            }
+        });
+    </script>
+</body>
+</html>
